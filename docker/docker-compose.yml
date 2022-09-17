@@ -1,0 +1,55 @@
+version: '3.1'
+
+services:
+  api:
+    restart: always
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    environment:
+      PORT: "${PORT:-8000}"
+      AMQP: "amqp://rmq"
+      MONGO: "mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@db:27017"
+      REDIS_HOST: "redis"
+    networks:
+      - api_network
+    ports:
+      - "${LOCAL_PORT}:${PORT:-8000}"
+    volumes:
+      - ../src:/usr/src/api-service/src
+    depends_on:
+      db:
+        condition: service_started
+      rmq:
+        condition: service_started
+      redis:
+        condition: service_started
+      
+  db:
+    image: mongo:4.4.1
+    restart: always
+    networks:
+      - api_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://db:27017"]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "${MONGODB_USER}"
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGODB_PASSWORD}"
+  rmq:
+    image: rabbitmq:3.8
+    restart: always
+    networks:
+      - api_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://rmq:5672"]
+  redis:
+    image: redis:6.0
+    networks:
+      - api_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://redis:6379"]
+
+
+networks:
+  api_network:
+    driver: bridge
