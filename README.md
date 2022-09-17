@@ -12,8 +12,8 @@ Check out some [examples in the entities directory](https://github.com/nervous-y
 # Installation
 You can either run it natively or run the whole thing through docker container.
 I prefer to run it the docker way and have only documented the same.
-So make sure you have [docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/) installed before running. If you have docker desktop install then both of these should be installed i guess.
-these.
+So make sure you have [docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/) installed before running.   
+If you have docker desktop installed then both of these should be available.
 
 ## Clone the project
 ```shell
@@ -94,6 +94,20 @@ class AuthorEntity extends BaseEntity {
 }
 ```
 
+Once you finish defining the entity and adding it to the [index.js](https://github.com/nervous-young-inhuman/base-entity-demo/blob/main/src/entities/index.js) file,
+make sure to include your entity in the [MainRouter.js](https://github.com/nervous-young-inhuman/base-entity-demo/blob/main/src/MainRouter.js) either passing it directly, or if you want it to have some prefix then passing it as an array pair.  
+
+For e.g: if you wanted all bookEntity routes to be prefixed with `/library` 
+```javascript
+
+this.routes = [
+    // other route definitions or entities
+    // ...
+    ['library/', bookEntity]
+]
+```
+then all book routes would be prefixed with `/library` and the route to get list will be available at
+http://localhost:8000/library/book
 
 # Footnotes
 [^1]: If you have set `LOCAL_PORT` to something else in the .env file then visit that port number.
