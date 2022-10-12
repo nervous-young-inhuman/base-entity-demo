@@ -1,5 +1,5 @@
 # base-entity-demo
-Demo of {BaseEntity} from [@shipwaves/api-libs](https://github.com/nervous-young-inhuman/base-entity-demo).
+Demo of {BaseEntity} from [@shipwaves/api-libs](https://www.npmjs.com/package/@shipwaves/api-libs)
 
 # Description
 A declarative REST model definer for JS. Which auto defines the 
